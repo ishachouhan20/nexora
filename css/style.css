@@ -1,0 +1,277 @@
+/* ===== NEXORA NAVBAR ===== */
+
+.navbar {
+    background: linear-gradient(90deg, #ffe1e8, #ff9fb2);
+    box-shadow: 0 4px 12px rgba(255, 63, 108, 0.25);
+}
+
+/* Brand logo spacing */
+.navbar-brand img {
+    padding: 5px;
+}
+
+/* Navbar links */
+/* !important;---->Overrides Bootstrap default blue */
+.navbar .nav-link {
+    color: #ff3f6c !important;
+    font-weight: 600;
+    margin: 0 6px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.navbar .nav-link:hover {
+    background-color: #ff3f6c;
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+/* Active page */
+.navbar .nav-link.active {
+    background-color: #e91e63;
+    color: #fff !important;
+}
+/* navbar dropdown */
+.navbar .dropdown-menu {
+    border-radius: 14px;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(255, 63, 108, 0.35);
+    transition: all 0.25s ease;
+}
+
+/* Enable scroll when open */
+.navbar .dropdown-menu.show {
+    max-height: 260px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
+}
+
+/* Dropdown items */
+.navbar .dropdown-menu .dropdown-item {
+    font-weight: 500;
+    text-transform: capitalize;
+    color: #444;
+    padding: 10px 20px;
+}
+
+/* Hover effect */
+.navbar .dropdown-menu .dropdown-item:hover {
+    background-color: #ffe1e8;
+    color: #ff3f6c;
+}
+
+/* Scrollbar width */
+.navbar .dropdown-menu.show::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* ✅ FIXED: scrollbar TRACK (background) */
+.navbar .dropdown-menu.show::-webkit-scrollbar-track {
+    background-color: #f5acbd;
+    border-radius: 10px;
+}
+
+/* Scrollbar thumb */
+.navbar .dropdown-menu.show::-webkit-scrollbar-thumb {
+    background-color: #ff9fb2;
+    border-radius: 10px;
+}
+
+/* Thumb hover */
+.navbar .dropdown-menu.show::-webkit-scrollbar-thumb:hover {
+    background-color: #ff3f6c;
+}
+
+/* 🔒 Hide scrollbar but keep existing styles */
+.navbar .dropdown-menu.show {
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* IE / Edge */
+}
+
+.navbar .dropdown-menu.show::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+
+/* Search box */
+.navbar .form-control {
+    border-radius: 12px;
+    border: 1px solid #ff9fb2;
+}
+
+.navbar .form-control:focus {
+    border-color: #ff3f6c;
+    box-shadow: 0 0 0 0.15rem rgba(255, 63, 108, 0.25);
+}
+
+/* Buttons (Search + Login) */
+.navbar .btn-outline-success {
+    color: #ff3f6c;
+    border-color: #ff3f6c;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.navbar .btn-outline-success:hover {
+    background-color: #ff3f6c;
+    color: #fff;
+}
+
+
+
+              /* PRODUCTS STYLING */
+/* Product Card */
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: 0.3s ease;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Image styling */
+.card-img-top {
+    height: 200px;
+    object-fit: contain;
+    padding: 10px;
+}
+
+/* Card body */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+/* Title */
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+/* Price */
+.card-text {
+    font-size: 16px;
+    font: weight 500px;;
+    color:black;
+    text-decoration:line-through;
+}
+
+/* stock */
+.card-stock{
+    font: weight 500px;;
+    color:black;
+}
+
+/* discount*/
+.card-discount{
+    font-size:16px;
+    font-weight: bold;
+    color: #28a745;
+}
+/* Button */
+.card-body button {
+    margin-top: auto;
+    border-radius: 20px;
+    padding: 6px 15px;
+}
+
+.btn-primary {
+    background: #ff5e7e;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #e94b68;
+}
+
+.card {
+    background: #fff;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+          /* SLIDER */
+#carouselExampleControls {
+  width: 85%;        /* reduce width */
+  margin:auto;     /* center it */
+  margin-top: 10px;
+}
+
+
+
+  .carousel .carousel-item img {
+  height: 400px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+
+         /* SHOP PAGINATION */
+ /* =========================
+   Nexora Pagination Styling
+   ========================= */
+
+#pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+    gap: 10px;
+}
+
+/* Remove default list style */
+#pagination .page-item {
+    list-style: none;
+}
+
+/* Page buttons */
+#pagination .page-link {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #e0e0e0;
+
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Hover effect */
+#pagination .page-link:hover {
+    background-color: #ff6f61; /* Nexora accent */
+    color: #ffffff;
+    border-color: #ff6f61;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 111, 97, 0.25);
+}
+
+/* Active page */
+#pagination .page-item.active .page-link {
+    background-color: #ff6f61;
+    color: #ffffff;
+    border-color: #ff6f61;
+    font-weight: 600;
+    box-shadow: 0 8px 16px rgba(255, 111, 97, 0.35);
+}
