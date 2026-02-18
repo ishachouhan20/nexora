@@ -165,7 +165,7 @@
     font-size: 16px;
     font: weight 500px;;
     color:black;
-    text-decoration:line-through;
+    /* text-decoration:line-through; */
 }
 
 /* stock */
@@ -274,4 +274,179 @@
     border-color: #ff6f61;
     font-weight: 600;
     box-shadow: 0 8px 16px rgba(255, 111, 97, 0.35);
+}
+
+
+
+/* =========================
+   NEXORA PINK OFFCANVAS
+========================= */
+
+.offcanvas {
+    background: #fff;
+    width: 420px !important;
+    border-left: 2px solid #ffe4ec;
+    box-shadow: 0 10px 35px rgba(255, 105, 180, 0.15);
+}
+
+.offcanvas-header {
+    background: linear-gradient(135deg, #fff0f5, #ffe4ec);
+    border-bottom: 1px solid #ffd6e7;
+    padding: 20px;
+}
+
+.offcanvas-title {
+    font-weight: 600;
+    font-size: 22px;
+    color: #d63384;
+    letter-spacing: 1px;
+}
+
+/* =========================
+   CART TABLE STYLE
+========================= */
+
+.table {
+    margin-top: 15px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: #fff0f5;
+    color: #d63384;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.table th {
+    padding: 12px;
+    border: none;
+}
+
+.table td {
+    padding: 14px 10px;
+    vertical-align: middle;
+    border-bottom: 1px solid #ffe4ec;
+    color: #555;
+}
+
+/* Product Name */
+.table td:first-child {
+    font-weight: 500;
+    color: #c2185b;
+}
+
+/* Quantity */
+.table td:nth-child(2) {
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Price & Total */
+.table td:nth-child(3),
+.table td:nth-child(4) {
+    color: #e91e63;
+    font-weight: 600;
+}
+
+/* Remove Button */
+.table button {
+    background: #ffe4ec;
+    color: #e91e63;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.table button:hover {
+    background: #ffc2d9;
+}
+
+/* =========================
+   CART TOTAL SECTION
+========================= */
+
+.offcanvas-body h5 {
+    padding-top: 15px;
+    border-top: 1px solid #ffd6e7;
+    margin-top: 20px;
+    font-weight: 600;
+    color: #c2185b;
+}
+
+#cartTotal {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e91e63;
+}
+
+/* =========================
+   CART BUTTON (Pink)
+========================= */
+
+.btn-primary {
+    background: linear-gradient(135deg, #ff4da6, #e91e63);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #e91e63, #d81b60);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.offcanvas-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb {
+    background: #ffb6c1;
+    border-radius: 10px;
+}
+/* =========================
+   QUANTITY BUTTON STYLE
+========================= */
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #ffe4ec;
+    color: #e91e63;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+}
+
+.qty-btn:hover {
+    background: #ffc2d9;
+}
+
+.qty-value {
+    display: inline-block;
+    width: 35px;
+    text-align: center;
+    font-weight: 600;
+    color: #c2185b;
+}
+
+/* Align properly inside table */
+.table td:nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
