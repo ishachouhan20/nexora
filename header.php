@@ -1,4 +1,3 @@
-<?php include('header.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +10,7 @@
 </head>
 <body>
           <!-- navbar -->
-    <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.php"><img src= "img/nexora_logo-removebg-preview.png" width="70"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -36,6 +35,18 @@
           </ul>
           </li>
       </ul>
+
+            <!-- cart button -->
+
+        <div class="cart-btn-wrapper me-3">
+    <button class="nexora-cart-btn" 
+        data-bs-toggle="offcanvas" 
+        data-bs-target="#offcanvasExample">
+        
+        🛒 Cart
+        <span id="cartCount" class="cart-badge">0</span>
+    </button>
+</div>
       <form class="d-flex me-2" role="search">
         <input class="form-control me-2" id="searchInput" type="text" placeholder="Search product" aria-label="Search"/>
         <button class="btn btn-outline-success" type="submit">Search</button> 
@@ -43,38 +54,42 @@
        <a class="btn btn-outline-success ms-2" href="login.php"> Login </a>
  </div>
   </div>
- </nav>  -->
-                       <!-- slider -->
+</nav>
 
-<div id="carouselWapper">
-                       <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="d-block w-100 h-50" src="img/clothes.jpg" alt="First slide">
+<!-- =====================CART OFFCANVAS====================== -->
+ <div class="offcanvas offcanvas-start"
+     tabindex="-1"
+     id="offcanvasExample">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">
+          My Cart
+        </h5>
+        <button type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="carousel-item">
-      <img class="d-block w-100 h-50" src="img/ring.jpg" alt="Second slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100 h-50" src="img/img3.jpg" alt="Third slide">
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button"data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-</div>
+    <div class="offcanvas-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="CartBody"></tbody>
+        </table>
+        <h5 class="text-end me-3">
+            Total: <span id="cartTotal">0</span>
+        </h5>
 
-<div class="container mt-4">
-  <div class="row" id="productList"></div>
-</div>
-       <!-- <script src="./javascript/bootstrap.bundle.min.js"></script>
- <script src="./javascript/custom.js"></script> -->
-</body>
-</html>
-<?php include('footer.php'); ?>
+        <!-- checkout button -->
+         <div class="text-end me-3 mt-3">
+            <button class="btn btn-success w-100" 
+            onclick="goToCheckout()">
+            Proceed to Checkout
+        </button></div>
+    </div>
+    </div>

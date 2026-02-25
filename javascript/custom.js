@@ -4,12 +4,50 @@ const carouselWapper=document.getElementById("carouselWapper");//carousel div
 const pagination=document.getElementById("pagination");
 const searchInput = document.getElementById("searchInput");
 let cart=JSON.parse(localStorage.getItem("cart")) ||[];
+const productDetails= document.getElementById("productDetails");
 
 let allProducts=[];
 let filterProducts=[];
 let currentPage=1;
 let limit=10;
 // to fix old cart items already saved in localstorage......your old cart items may not have discounted price.
+
+const params= new URLSearchParams(window.location.search);
+let productid= params.get("id");
+console.log(productid);
+
+fetch(`https://dummyjson.com/products/${productid}`)
+.then(res => res.json())
+.then(product => {
+    getProduct(product);
+});
+
+function getProduct(product) {
+    productDetails.innerHTML = `
+        <div class="row single-product-container">
+            <div class="col-md-6 text-center">
+                <img src="${product.thumbnail}" class="img-fluid single-product-img">
+            </div>
+
+            <div class="col-md-6 single-product-info">
+                <h2 class="product-title">${product.title}</h2>
+                <p class="product-brand">Brand: ${product.brand}</p>
+                <h4 class="product-price">₹ ${product.price}</h4>
+                <p class="product-rating">⭐ ${product.rating}</p>
+                <p class="product-description">${product.description}</p>
+                <button class="btn btn-primary btn-sm mt-auto"
+                    onclick="addToCart(${product.id})">
+
+                        Add to Cart
+
+                    </button>
+
+            </div>
+        </div>
+    `;
+}
+
+
 
 function fixCartDiscount(){
 
@@ -144,8 +182,8 @@ function displayProduct(){
                      style="height:200px; object-fit:contain;">
 
                 <div class="card-body d-flex flex-column">
+                    <h6 class="card-title"><a href='product.php?id=${product.id}'>${product.title}</a></h6>
 
-                    <h6 class="card-title">${product.title}</h6>
 
                     <!-- Discounted Price -->
                     <p class="card-text mb-1">
@@ -267,7 +305,11 @@ function rendercart(){
 
     const CartBody = document.getElementById("CartBody");
     const cartTotal = document.getElementById("cartTotal");
+    const cartCount = document.getElementById("cartCount");
 
+    if(cartCount){
+        cartCount.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+    }
     if(!CartBody) return;
 
     CartBody.innerHTML = "";
@@ -375,3 +417,68 @@ function removeFromCart(id){
 
 // LOAD CART ON PAGE LOAD
 rendercart();
+
+function goToCheckout(){
+if(cart.length ===0){
+    alert("Your cart is empty!");
+    return;
+}
+window.location.href ="checkout.php";
+}
+
+// ============CHECKOUT PAGE SCRIPT==============
+document.addEventListener("DOMContentLoaded", function () {
+
+    let checkoutDiv = document.getElementById("checkoutCart");
+    let hiddenTotal = document.getElementById("hiddenTotal");
+
+    if (!checkoutDiv || !hiddenTotal) return;
+
+    function loadCheckout() {
+
+        // 🔥 ALWAYS get latest cart from localStorage
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        if (cart.length === 0) {
+            checkoutDiv.innerHTML = `
+                <div class="text-danger text-center">
+                    <h5>Your cart is empty</h5>
+                </div>
+            `;
+            return;
+        }
+
+        let total = 0;
+        let output = "";
+
+       cart.forEach(function(item) {
+
+    const itemTotal = item.price * item.qty;
+    total += itemTotal;
+
+    output += `
+        <div class="card mb-3 p-3 shadow-sm">
+            <div><strong>Title:</strong> ${item.title}</div>
+            <div><strong>Price:</strong> ₹${item.price}</div>
+            <div><strong>Qty:</strong> ${item.qty}</div>
+            <div class="text-success fw-bold">
+                Subtotal: ₹${itemTotal}
+            </div>
+        </div>
+    `;
+});
+
+        output += `
+            <hr>
+            <div class="d-flex justify-content-between fw-bold">
+                <div>Total</div>
+                <div>₹${total}</div>
+            </div>
+        `;
+
+        checkoutDiv.innerHTML = output;
+        hiddenTotal.value = total;
+    }
+
+    loadCheckout();
+});

@@ -124,6 +124,7 @@
 
 
 
+
               /* PRODUCTS STYLING */
 /* Product Card */
 .card {
@@ -386,7 +387,7 @@
    CART BUTTON (Pink)
 ========================= */
 
-.btn-primary {
+/* .btn-primary {
     background: linear-gradient(135deg, #ff4da6, #e91e63);
     border: none;
     padding: 8px 20px;
@@ -398,7 +399,7 @@
 .btn-primary:hover {
     background: linear-gradient(135deg, #e91e63, #d81b60);
     transform: translateY(-2px);
-}
+} */
 
 /* =========================
    SCROLLBAR
@@ -449,4 +450,129 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+}
+
+
+/* ================= NEXORA CART BUTTON ================= */
+
+.nexora-cart-btn {
+    position: relative;
+    background: linear-gradient(135deg, #ff4d94, #ff80bf);
+    color: white;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 50px;   /* OVAL SHAPE */
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 77, 148, 0.3);
+}
+
+.nexora-cart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 77, 148, 0.4);
+}
+
+/* ================= CART BADGE ================= */
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    background-color: white;
+    color: #ff4d94;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 7px;
+    border-radius: 50%;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* ===== Single Product Page - Nexora Pink Theme ===== */
+
+.single-product-container {
+    margin-top: 60px;
+    padding: 40px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(255, 105, 180, 0.08);
+    align-items: center;
+}
+
+/* Product Image */
+.single-product-img {
+    max-height: 420px;
+    object-fit: contain;
+    transition: 0.4s ease;
+}
+
+.single-product-img:hover {
+    transform: scale(1.07);
+}
+
+/* Product Info Section */
+.single-product-info {
+    padding: 20px 30px;
+}
+
+/* Title */
+.product-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #d63384;   /* Nexora pink */
+    margin-bottom: 15px;
+}
+
+/* Brand */
+.product-brand {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+/* Price */
+.product-price {
+    font-size: 26px;
+    font-weight: bold;
+    color: #ff1493;  /* Bright pink */
+    margin-bottom: 15px;
+}
+
+/* Rating */
+.product-rating {
+    font-size: 18px;
+    color: #ff69b4;
+    margin-bottom: 15px;
+}
+
+/* Description */
+.product-description {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .single-product-container {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .single-product-info {
+        padding: 20px 10px;
+    }
+
+    .product-title {
+        font-size: 24px;
+    }
+
+    .product-price {
+        font-size: 22px;
+    }
 }
