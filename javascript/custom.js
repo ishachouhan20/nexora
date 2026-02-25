@@ -2,6 +2,7 @@ const categoryList = document.getElementById("categoryList");
 const productList = document.getElementById("productList");
 const carouselWapper=document.getElementById("carouselWapper");//carousel div
 const pagination=document.getElementById("pagination");
+const searchForm=document.querySelector("form[role='search']");
 const searchInput = document.getElementById("searchInput");
 let cart=JSON.parse(localStorage.getItem("cart")) ||[];
 const productDetails= document.getElementById("productDetails");
@@ -23,6 +24,11 @@ fetch(`https://dummyjson.com/products/${productid}`)
 });
 
 function getProduct(product) {
+
+    const discountedPrice = Math.round(
+        product.price - (product.price * product.discountPercentage / 100)
+    );
+    
     productDetails.innerHTML = `
         <div class="row single-product-container">
             <div class="col-md-6 text-center">
@@ -32,22 +38,35 @@ function getProduct(product) {
             <div class="col-md-6 single-product-info">
                 <h2 class="product-title">${product.title}</h2>
                 <p class="product-brand">Brand: ${product.brand}</p>
-                <h4 class="product-price">₹ ${product.price}</h4>
+
+                <!-- Price Section -->
+                <h4 class="product-price">
+                    <span class="text-success fw-bold">
+                        ₹ ${discountedPrice}
+                    </span>
+                    <br>
+                    <small class="text-muted text-decoration-line-through">
+                        ₹ ${product.price}
+                    </small>
+                </h4>
+
+                <p class="text-success">
+                    ${product.discountPercentage}% OFF
+                </p>
+
                 <p class="product-rating">⭐ ${product.rating}</p>
                 <p class="product-description">${product.description}</p>
-                <button class="btn btn-primary btn-sm mt-auto"
+
+                <button class="btn nexora-cart-btn"
+                    data-id="${product.id}"
                     onclick="addToCart(${product.id})">
-
-                        Add to Cart
-
-                    </button>
+                    Add to Cart
+                </button>
 
             </div>
         </div>
     `;
 }
-
-
 
 function fixCartDiscount(){
 
@@ -94,13 +113,17 @@ fetch('https://dummyjson.com/products?limit=100')
 });
 
 // Search Filter
-searchInput.addEventListener("input",function(){
-    const keyword =this.value.toLowerCase();
+searchForm.addEventListener("submit",function(e){
+    e.preventDefault();//stop page reload
 
-    filterProducts=allProducts.filter(p => p.title
-                                      .toLowerCase()
-                                      .includes(keyword));
-    console.log(filterProducts);
+    const keyword =searchInput.value.toLowerCase().trim();
+
+    filterProducts=allProducts.filter(p =>  
+        p.title.toLowerCase().includes(keyword)) ||
+        p.brand.toLowerCase().includes(keyword)  ||
+        p.category.toLowerCase().includes(keyword
+        );
+            // console.log(filterProducts);
     currentPage=1;
     render();                                  
 });
@@ -182,7 +205,7 @@ function displayProduct(){
                      style="height:200px; object-fit:contain;">
 
                 <div class="card-body d-flex flex-column">
-                    <h6 class="card-title"><a href='product.php?id=${product.id}'>${product.title}</a></h6>
+                    <h6 class="card-title">${product.title}</h6>
 
 
                     <!-- Discounted Price -->
@@ -211,14 +234,10 @@ function displayProduct(){
                         Stock: ${product.stock}
                     </p>
 
-                    <!-- Add to Cart Button -->
-                    <button class="btn btn-primary btn-sm mt-auto"
-                    onclick="addToCart(${product.id})">
-
-                        Add to Cart
-
-                    </button>
-
+                    <a href="product.php?id=${product.id}" 
+                       class="btn nexora-view-btn btn-sm mt-auto">
+                       View Details
+                    </a>
                 </div>
 
             </div>
@@ -287,10 +306,21 @@ function addToCart(productId){
     }
 
     saveCart();
+
+    updateCartButton(productId);
 }
 
 
-
+ function updateCartButton(productId){
+          
+    const buttons =document.querySelectorAll(`[data-id='${productId}']`);
+    buttons.forEach(btn =>{
+        btn.innerText="Added ✓";
+        btn.classList.remove("nexora-cart-btn");
+        btn.classList.add("added-btn");
+        btn.disabled=true;
+    });
+}
 // SAVE CART
 function saveCart(){
 
@@ -429,50 +459,75 @@ window.location.href ="checkout.php";
 // ============CHECKOUT PAGE SCRIPT==============
 document.addEventListener("DOMContentLoaded", function () {
 
-    let checkoutDiv = document.getElementById("checkoutCart");
-    let hiddenTotal = document.getElementById("hiddenTotal");
+    const checkoutDiv = document.getElementById("checkoutCart");
+    const hiddenTotal = document.getElementById("hiddenTotal");
 
     if (!checkoutDiv || !hiddenTotal) return;
 
     function loadCheckout() {
 
-        // 🔥 ALWAYS get latest cart from localStorage
+        // Always fetch latest cart
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
         if (cart.length === 0) {
             checkoutDiv.innerHTML = `
-                <div class="text-danger text-center">
+                <div class="text-danger text-center mt-4">
                     <h5>Your cart is empty</h5>
                 </div>
             `;
+            hiddenTotal.value = 0;
             return;
         }
 
         let total = 0;
-        let output = "";
 
-       cart.forEach(function(item) {
+        let output = `
+            <div class="card p-4 shadow-sm rounded-4">
+                
+                <!-- Column Headings -->
+                <div class="d-flex justify-content-between fw-bold border-bottom pb-2 mb-3">
+                    <div style="flex:2;">Product</div>
+                    <div style="flex:1;" class="text-center">Price</div>
+                    <div style="flex:1;" class="text-center">Qty</div>
+                    <div style="flex:1;" class="text-end">Subtotal</div>
+                </div>
+        `;
 
-    const itemTotal = item.price * item.qty;
-    total += itemTotal;
+        cart.forEach(function(item) {
 
-    output += `
-        <div class="card mb-3 p-3 shadow-sm">
-            <div><strong>Title:</strong> ${item.title}</div>
-            <div><strong>Price:</strong> ₹${item.price}</div>
-            <div><strong>Qty:</strong> ${item.qty}</div>
-            <div class="text-success fw-bold">
-                Subtotal: ₹${itemTotal}
-            </div>
-        </div>
-    `;
-});
+            const itemTotal = item.price * item.qty;
+            total += itemTotal;
+
+            output += `
+                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                    
+                    <div style="flex:2;">
+                        ${item.title}
+                    </div>
+
+                    <div style="flex:1;" class="text-center">
+                        ₹${item.price}
+                    </div>
+
+                    <div style="flex:1;" class="text-center">
+                        ${item.qty}
+                    </div>
+
+                    <div style="flex:1;" class="text-end text-success fw-bold">
+                        ₹${itemTotal}
+                    </div>
+
+                </div>
+            `;
+        });
 
         output += `
-            <hr>
-            <div class="d-flex justify-content-between fw-bold">
-                <div>Total</div>
-                <div>₹${total}</div>
+                <!-- Total Section -->
+                <div class="d-flex justify-content-between mt-4 fw-bold fs-5">
+                    <div>Total</div>
+                    <div>₹${total}</div>
+                </div>
+
             </div>
         `;
 

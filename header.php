@@ -48,10 +48,16 @@
     </button>
 </div>
       <form class="d-flex me-2" role="search">
-        <input class="form-control me-2" id="searchInput" type="text" placeholder="Search product" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button> 
+        <input class="form-control me-2"
+         id="searchInput"
+          type="text"
+           placeholder="Search product" 
+           aria-label="Search">
+
+        <button class="btn nexora-search-btn"
+         type="submit">Search</button> 
       </form>
-       <a class="btn btn-outline-success ms-2" href="login.php"> Login </a>
+       <a class="btn nexora-search-btn ms-2" href="login.php"> Login </a>
  </div>
   </div>
 </nav>
