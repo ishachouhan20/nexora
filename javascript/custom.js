@@ -9,6 +9,9 @@ const productDetails= document.getElementById("productDetails");
 
 const topRatedList = document.getElementById("topRatedList");
 const discountList= document.getElementById("discountList");
+const homeSections = document.getElementById("homeSections");
+let selectedCategory = null;
+
 
 let allProducts=[];
 let filterProducts=[];
@@ -160,6 +163,8 @@ fetch('https://dummyjson.com/products?limit=100')
 // ================= TOP RATED SECTION =================
 function showTopRated(){
     if(!topRatedList) return;
+        
+    topRatedList.innerHTML="";
 
     const topProducts = [...allProducts]
     .sort((a,b) => b.rating - a.rating)
@@ -257,18 +262,53 @@ function showDiscounted(){
     });
 }
 
+function hideHomeSections(){
+    if(homeSections){
+        homeSections.style.display="none";
+    }
+    if(carouselWapper){
+        carouselWapper.style.display="none";
+    }
+}
+function showHomeSections(){
+    if(homeSections){
+        homeSections.style.display="block";
+    }
+    if(carouselWapper){
+        carouselWapper.style.display="block";
+    }
+}
+
 // Search Filter
 if(searchForm){
     searchForm.addEventListener("submit", function(e){
         e.preventDefault();
 
         const keyword = searchInput.value.toLowerCase().trim();
+        
+       if(keyword ===""){
+           if(selectedCategory){
+                     filterProducts=allProducts.filter(p =>
+                        p.category===selectedCategory
+                     );
+           } else{
+           showHomeSections();
+        filterProducts=allProducts;
+           }
+           currentPage=1;
+        render();
+        return;
+       }
+        hideHomeSections();
+        let baseProducts=selectedCategory
+        ?allProducts.filter(p => p.category===selectedCategory)
+        :allProducts;
 
-       filterProducts = allProducts.filter(p =>
+       filterProducts = baseProducts.filter(p =>
     (p.title && p.title.toLowerCase().includes(keyword)) ||
-    (p.brand && p.brand.toLowerCase().includes(keyword)) ||
-    (p.category && p.category.toLowerCase().includes(keyword))
-);
+    (p.brand && p.brand.toLowerCase().includes(keyword))
+    // (p.category && p.category.toLowerCase().includes(keyword))
+       );
 
         currentPage = 1;
         render();
@@ -295,19 +335,22 @@ fetch('https://dummyjson.com/products/category-list')
 // .then(data => displayProduct(data.products));
 //3.load products by category & hide carousel
 function loadProduct(cat){
-   //hide carousel when category is clicked
-    if (carouselWapper){
-    carouselWapper.style.display="none";
-   }
-   fetch(`https://dummyjson.com/products/category/${cat}`)
-   .then(res => res.json())
-   .then(data => {
-    allProducts = data.products;
-    filterProducts=allProducts;
-    currentPage = 1;
+    hideHomeSections();
+     selectedCategory=cat;
+//    fetch(`https://dummyjson.com/products/category/${cat}`)
+//    .then(res => res.json())
+//    .then(data => {
+    
+    // allProducts = data.products;
+    // filterProducts=allProducts;
+    // currentPage = 1;
+        filterProducts=allProducts.filter(product =>
+            product.category===cat
+        );
+        currentPage=1;
+
     render();
- } );
-}
+    }
 
 function render(){
     displayProduct();

@@ -37,7 +37,7 @@
 </div>
 </div>
 <!-- PRODUCT SECTION -->
-<div class="container mt-5">
+<div class="container mt-5" id="homeSections">
 
   <h3 class="mb-4 fw-bold text-center">⭐ Top 5 Rating Products</h3>
   <div class="row" id="topRatedList"></div>
@@ -59,4 +59,5 @@
  <script src="./javascript/custom.js"></script> -->
 </body>
 </html>
+<div class="container mt-5" id="about"></div>
 <?php include('footer.php'); ?>
