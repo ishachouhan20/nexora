@@ -10,40 +10,7 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-          <!-- navbar -->
-    <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.php"><img src= "img/nexora_logo-removebg-preview.png" width="70"></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="index.php">Home</a> 
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="shop.php">Shop</a>
-        </li> 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" 
-          data-bs-toggle="dropdown" aria-expanded="false">
-            Categories
-          </a>
-            <ul class="dropdown-menu" id="categoryList" data-bs-auto-close="outside">
-            <li> Loading.....</li>
-          </ul>
-          </li>
-      </ul>
-      <form class="d-flex me-2" role="search">
-        <input class="form-control me-2" id="searchInput" type="text" placeholder="Search product" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button> 
-      </form>
-       <a class="btn btn-outline-success ms-2" href="login.php"> Login </a>
- </div>
-  </div>
- </nav>  -->
+
                        <!-- slider -->
 
 <div id="carouselWapper">
@@ -69,11 +36,26 @@
   </a>
 </div>
 </div>
+<!-- PRODUCT SECTION -->
+<div class="container mt-5">
 
-<div class="container mt-4">
-  <div class="row" id="productList"></div>
+  <h3 class="mb-4 fw-bold text-center">⭐ Top 5 Rating Products</h3>
+  <div class="row" id="topRatedList"></div>
+
+  <hr class="my-5">
+
+  <h3 class="md-4 fw-bold text-center text-success">
+    🔥 Discounted Products (More than 10% OFF)
+  </h3>
+  <div class="row" id="discountList"></div>
 </div>
-       <!-- <script src="./javascript/bootstrap.bundle.min.js"></script>
+<div class="container mt-5">
+  <div id="productDetails">
+</div>
+</div>
+<div class="row" id="productList"></div>
+<div id="pagination"></div>
+<!-- <script src="./javascript/bootstrap.bundle.min.js"></script>
  <script src="./javascript/custom.js"></script> -->
 </body>
 </html>

@@ -47,10 +47,10 @@
         <span id="cartCount" class="cart-badge">0</span>
     </button>
 </div>
-      <form class="d-flex me-2" role="search">
+      <form id="searchForm" class="d-flex me-2">
         <input class="form-control me-2"
          id="searchInput"
-          type="text"
+          type="search"
            placeholder="Search product" 
            aria-label="Search">
 

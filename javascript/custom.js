@@ -2,10 +2,13 @@ const categoryList = document.getElementById("categoryList");
 const productList = document.getElementById("productList");
 const carouselWapper=document.getElementById("carouselWapper");//carousel div
 const pagination=document.getElementById("pagination");
-const searchForm=document.querySelector("form[role='search']");
+const searchForm=document.getElementById("searchForm");
 const searchInput = document.getElementById("searchInput");
 let cart=JSON.parse(localStorage.getItem("cart")) ||[];
 const productDetails= document.getElementById("productDetails");
+
+const topRatedList = document.getElementById("topRatedList");
+const discountList= document.getElementById("discountList");
 
 let allProducts=[];
 let filterProducts=[];
@@ -13,15 +16,27 @@ let currentPage=1;
 let limit=10;
 // to fix old cart items already saved in localstorage......your old cart items may not have discounted price.
 
-const params= new URLSearchParams(window.location.search);
-let productid= params.get("id");
-console.log(productid);
+const params = new URLSearchParams(window.location.search);
+let productid = params.get("id");
 
-fetch(`https://dummyjson.com/products/${productid}`)
-.then(res => res.json())
-.then(product => {
-    getProduct(product);
-});
+console.log("Product ID:", productid);
+
+// 🔥 Only fetch if ID exists
+if (productid) {
+
+    fetch(`https://dummyjson.com/products/${productid}`)
+    .then(res => res.json())
+    .then(product => {
+
+        // 🔥 Only call if function exists
+        if (typeof getProduct === "function") {
+            getProduct(product);
+        }
+
+    })
+    .catch(error => console.error("Error loading product:", error));
+
+}
 
 function getProduct(product) {
 
@@ -95,42 +110,169 @@ function fixCartDiscount(){
 
 
 //load all products on page load
+// ================= FETCH PRODUCTS =================
 fetch('https://dummyjson.com/products?limit=100')
 .then(res => res.json())
 .then(data => {
 
     allProducts = data.products;
 
-    filterProducts = allProducts;
+    // ================= PAGE DETECTION =================
+    const currentPagePath = window.location.pathname;
 
-    fixCartDiscount();   // ✅ ADD THIS
+    // -------- SHOP PAGE --------
+    if(currentPagePath.includes("shop.php")){
 
-    currentPage = 1;
+        filterProducts = allProducts;   // show all initially
+        currentPage = 1;
+        render();                       // show products with pagination
 
-    render();
+    }
 
-    rendercart();        // ✅ ADD THIS
+    // -------- INDEX PAGE --------
+    else if(currentPagePath.includes("index.php")){
+
+        if(typeof showTopRated === "function"){
+            showTopRated();
+        }
+
+        if(typeof showDiscounted === "function"){
+            showDiscounted();
+        }
+
+    }
+
+    // ================= CART FIX =================
+    if(typeof fixCartDiscount === "function"){
+        fixCartDiscount();
+    }
+
+    if(typeof rendercart === "function"){
+        rendercart();
+    }
+
+})
+.catch(error => {
+    console.error("Error loading products:", error);
 });
+
+
+// ================= TOP RATED SECTION =================
+function showTopRated(){
+    if(!topRatedList) return;
+
+    const topProducts = [...allProducts]
+    .sort((a,b) => b.rating - a.rating)
+    .slice(0,5);
+      
+   topProducts.forEach(product =>{
+
+    const discountedPrice = Math.round(
+        product.price - (product.price * product.discountPercentage / 100)
+    );
+
+    topRatedList.innerHTML += `
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+
+                <img src="${product.thumbnail}" 
+                     class="card-img-top"
+                     style="height:200px; object-fit:contain;">
+
+                <div class="card-body d-flex flex-column">
+                    <h6>${product.title}</h6>
+
+                    <p class="text-warning">⭐ ${product.rating}</p>
+                    
+                    <p class="text-success">
+                        ${product.discountPercentage}% OFF
+                    </p>
+
+                    <p>
+                        <span class="text-success fw-bold">
+                            ₹${discountedPrice}
+                        </span><br>
+                        <small class="text-muted text-decoration-line-through">
+                            ₹${product.price}
+                        </small>
+                    </p>
+
+                    <a href="product.php?id=${product.id}" 
+                       class="btn btn-sm btn-primary mt-auto">
+                       View Details
+                    </a>
+                </div>
+
+            </div>
+        </div>`;
+    });
+}
+// ================= DISCOUNT SECTION =================
+function showDiscounted(){
+    if(!discountList)return;
+
+    discountList.innerHTML= "";
+
+    const discountedProducts= allProducts
+        .filter(product => product.discountPercentage >10)
+        .slice(0,8);
+
+    discountedProducts.forEach(product =>{
+         
+        const discountedPrice = Math.round(
+            product.price - (product.price * product.discountPercentage / 100)
+        );
+        discountList.innerHTML += `
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+
+                <img src="${product.thumbnail}" 
+                     class="card-img-top"
+                     style="height:200px; object-fit:contain;">
+
+                <div class="card-body d-flex flex-column">
+                    <h6>${product.title}</h6>
+
+                    <p class="text-success">
+                        ${product.discountPercentage}% OFF
+                    </p>
+
+                    <p>
+                        <span class="text-success fw-bold">
+                            ₹${discountedPrice}
+                        </span><br>
+                        <small class="text-muted text-decoration-line-through">
+                            ₹${product.price}
+                        </small>
+                    </p>
+
+                    <a href="product.php?id=${product.id}" 
+                       class="btn btn-sm btn-primary mt-auto">
+                       View Details
+                    </a>
+                </div>
+
+            </div>
+        </div>`;
+    });
+}
 
 // Search Filter
-searchForm.addEventListener("submit",function(e){
-    e.preventDefault();//stop page reload
+if(searchForm){
+    searchForm.addEventListener("submit", function(e){
+        e.preventDefault();
 
-    const keyword =searchInput.value.toLowerCase().trim();
+        const keyword = searchInput.value.toLowerCase().trim();
 
-    filterProducts=allProducts.filter(p =>  
-        p.title.toLowerCase().includes(keyword)) ||
-        p.brand.toLowerCase().includes(keyword)  ||
-        p.category.toLowerCase().includes(keyword
-        );
-            // console.log(filterProducts);
-    currentPage=1;
-    render();                                  
-});
+       filterProducts = allProducts.filter(p =>
+    (p.title && p.title.toLowerCase().includes(keyword)) ||
+    (p.brand && p.brand.toLowerCase().includes(keyword)) ||
+    (p.category && p.category.toLowerCase().includes(keyword))
+);
 
-function render(){
-    displayProduct();
-    setupPagination();
+        currentPage = 1;
+        render();
+    });
 }
 
 // fetch handles promises
@@ -166,6 +308,13 @@ function loadProduct(cat){
     render();
  } );
 }
+
+function render(){
+    displayProduct();
+    setupPagination();
+}
+
+
 //4.display products
 function displayProduct(){
 
@@ -262,8 +411,8 @@ function setupPagination(){
 
 function changePage(page){
     currentPage = page;
-    displayProduct(allProducts);
-    setupPagination(allProducts);
+    displayProduct();
+    setupPagination();
 }
 
 // let cart = JSON.parse(localStorage.getItem("cart")) || [];

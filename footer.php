@@ -1,3 +1,44 @@
+ <!-- Nexora Pink Footer -->
+    <footer class="nexora-footer mt-5 pt-5 pb-3">
+        <div class="container">
+            <div class="row align-items-center">
+
+                <!-- About Section -->
+                 <h4 class="md-4 fw-bold text-center text-danger">
+                       ABOUT US
+                 </h4>
+                <div class="col-md-6 mb-4">
+                    <h5 class="footer-heading">Nexora</h5>
+                    <p>
+                        Nexora is your trusted online shopping destination
+                        offering top rated and highly discounted products
+                        with premium quality and fast delivery service.
+                        Our mission is to make online shopping simple, affordable,
+                        and enjoyable for everyone with premium quality products
+                        and fast delivery service.
+                    </p>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="col-md-6 mb-4 text-md-end">
+                    <h5 class="footer-heading">Contact Us</h5>
+                    <p>Email: support@nexora.com</p>
+                    <p>Phone: +91 9876543210</p>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="text-center">
+                <p class="mb-0">
+                    © <?php echo date("Y"); ?> Nexora. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+<!-- Cart Offcanvas -->
 <div class="offcanvas offcanvas-start"
      tabindex="-1"
      id="offcanvasExample">

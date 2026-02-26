@@ -626,3 +626,39 @@
     border-radius: 8px;
     font-weight: 600;
 }
+
+
+/* 🌸 Nexora Light Pink Footer Theme */
+.nexora-footer {
+    background: linear-gradient(135deg, #fff0f6, #ffe6f2); /* very light pink gradient */
+    color: #444;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    box-shadow: 0 -5px 20px rgba(255, 105, 180, 0.1);
+}
+
+/* Footer Heading */
+.nexora-footer .footer-heading {
+    color: #ff1a75;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+/* Paragraph Styling */
+.nexora-footer p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+/* Divider Line */
+.nexora-footer hr {
+    border-color: rgba(255, 105, 180, 0.3);
+}
+
+/* Copyright Text */
+.nexora-footer .text-center p {
+    font-size: 14px;
+    color: #666;
+}
