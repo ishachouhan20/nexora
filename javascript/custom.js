@@ -175,6 +175,8 @@ function showTopRated(){
     const discountedPrice = Math.round(
         product.price - (product.price * product.discountPercentage / 100)
     );
+    const fullstars=Math.floor(product.rating);
+    const stars="⭐".repeat(fullstars);
 
     topRatedList.innerHTML += `
         <div class="col-md-3 mb-4">
@@ -187,7 +189,7 @@ function showTopRated(){
                 <div class="card-body d-flex flex-column">
                     <h6>${product.title}</h6>
 
-                    <p class="text-warning">⭐ ${product.rating}</p>
+                    <p class="text-warning">${stars}</p>
                     
                     <p class="text-success">
                         ${product.discountPercentage}% OFF
