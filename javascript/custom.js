@@ -84,6 +84,9 @@ function getProduct(product) {
             </div>
         </div>
     `;
+    setTimeout(()=>{
+        checkSingleProductButton(product.id);
+    },100);
 }
 
 function fixCartDiscount(){
@@ -203,11 +206,21 @@ function showTopRated(){
                             ₹${product.price}
                         </small>
                     </p>
+                    
+                    <div class="mt-auto d-grid gap-2">
 
                     <a href="product.php?id=${product.id}" 
-                       class="btn btn-sm btn-primary mt-auto">
+                       class="btn btn-sm btn-primary">
                        View Details
                     </a>
+
+                    <button class="btn btn-primary btn-sm"
+                    data-id="${product.id}"
+                    onclick="buyNow(${product.id})">
+                    Buy Now
+                    </button>
+                    </div>
+
                 </div>
 
             </div>
@@ -253,12 +266,20 @@ function showDiscounted(){
                         </small>
                     </p>
 
-                    <a href="product.php?id=${product.id}" 
-                       class="btn btn-sm btn-primary mt-auto">
-                       View Details
-                    </a>
-                </div>
+                    <div class="mt-auto d-grid gap-2">
 
+                     <a href="product.php?id=${product.id}" 
+                        class="btn btn-primary btn-sm">
+                        View Details
+                        </a>
+
+                      <button class="btn btn-primary btn-sm"
+                      data-id="${product.id}"
+                    onclick="buyNow(${product.id})">
+                    Buy Now
+                    </button>
+                    </div>
+                </div>
             </div>
         </div>`;
     });
@@ -427,11 +448,21 @@ function displayProduct(){
                     <p class="text-muted small">
                         Stock: ${product.stock}
                     </p>
+                    
+                    <div class="mt-auto d-grid gap-2">
 
                     <a href="product.php?id=${product.id}" 
-                       class="btn nexora-view-btn btn-sm mt-auto">
+                       class="btn nexora-view-btn btn-sm">
                        View Details
                     </a>
+
+                    <button class="btn nexora-view-btn btn-sm"
+                    data-id="${product.id}"
+                    onclick="buyNow(${product.id})">
+                    Buy Now
+                    </button>
+                    </div>
+
                 </div>
 
             </div>
@@ -504,6 +535,9 @@ function addToCart(productId){
     updateCartButton(productId);
 }
 
+function buyNow(productId){
+    addToCart(productId);
+}
 
  function updateCartButton(productId){
           
@@ -515,12 +549,36 @@ function addToCart(productId){
         btn.disabled=true;
     });
 }
+
+function checkSingleProductButton(productId){
+    let latestCart = JSON.parse(localStorage.getItem("cart")) ||[];
+    const exists = latestCart.find(item => item.id ==productId);
+    const buttons = document.querySelectorAll(`[data-id='${productId}']`);
+    buttons.forEach(btn =>{
+
+        if(exists){
+            btn.innerText ="Added ✓";
+            btn.classList.remove("nexora-cart-btn");
+            btn.classList.add("added-btn");
+            btn.disabled=true;
+        }else{
+            btn.innerText="Add to Cart";
+            btn.classList.add("nexora-cart-btn");
+            btn.classList.remove("added-btn");
+            btn.disabled=false;
+        }
+    });
+}
+
 // SAVE CART
 function saveCart(){
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
     rendercart();
+    
+    //this makes it live 
+    loadCheckout();
 }
 
 
@@ -631,10 +689,21 @@ function decreaseQty(id){
 
 // REMOVE ITEM
 function removeFromCart(id){
+    // let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     cart = cart.filter(item => item.id !== id);
-
+     
     saveCart();
+    rendercart();
+
+    // localStorage.setItem("cart",JSON.stringify(cart));
+    // rendercart();
+
+    // reset button
+    checkSingleProductButton(id); 
+    if(document.getElementById("checkoutCart"))  {
+        loadCheckout();
+    }   
 
 }
 
@@ -651,83 +720,69 @@ window.location.href ="checkout.php";
 }
 
 // ============CHECKOUT PAGE SCRIPT==============
-document.addEventListener("DOMContentLoaded", function () {
+// ============ LIVE CHECKOUT FUNCTION ============
 
+function loadCheckout() {
+  console.log("Function Triggered");
     const checkoutDiv = document.getElementById("checkoutCart");
     const hiddenTotal = document.getElementById("hiddenTotal");
 
     if (!checkoutDiv || !hiddenTotal) return;
 
-    function loadCheckout() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // Always fetch latest cart
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        if (cart.length === 0) {
-            checkoutDiv.innerHTML = `
-                <div class="text-danger text-center mt-4">
-                    <h5>Your cart is empty</h5>
-                </div>
-            `;
-            hiddenTotal.value = 0;
-            return;
-        }
-
-        let total = 0;
-
-        let output = `
-            <div class="card p-4 shadow-sm rounded-4">
-                
-                <!-- Column Headings -->
-                <div class="d-flex justify-content-between fw-bold border-bottom pb-2 mb-3">
-                    <div style="flex:2;">Product</div>
-                    <div style="flex:1;" class="text-center">Price</div>
-                    <div style="flex:1;" class="text-center">Qty</div>
-                    <div style="flex:1;" class="text-end">Subtotal</div>
-                </div>
-        `;
-
-        cart.forEach(function(item) {
-
-            const itemTotal = item.price * item.qty;
-            total += itemTotal;
-
-            output += `
-                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                    
-                    <div style="flex:2;">
-                        ${item.title}
-                    </div>
-
-                    <div style="flex:1;" class="text-center">
-                        ₹${item.price}
-                    </div>
-
-                    <div style="flex:1;" class="text-center">
-                        ${item.qty}
-                    </div>
-
-                    <div style="flex:1;" class="text-end text-success fw-bold">
-                        ₹${itemTotal}
-                    </div>
-
-                </div>
-            `;
-        });
-
-        output += `
-                <!-- Total Section -->
-                <div class="d-flex justify-content-between mt-4 fw-bold fs-5">
-                    <div>Total</div>
-                    <div>₹${total}</div>
-                </div>
-
+    if (cart.length === 0) {
+        checkoutDiv.innerHTML = `
+            <div class="text-danger text-center mt-4">
+                <h5>Your cart is empty</h5>
             </div>
         `;
-
-        checkoutDiv.innerHTML = output;
-        hiddenTotal.value = total;
+        hiddenTotal.value = 0;
+        return;
     }
 
-    loadCheckout();
+    let total = 0;
+
+    let output = `
+        <div class="card p-4 shadow-sm rounded-4">
+            <div class="d-flex justify-content-between fw-bold border-bottom pb-2 mb-3">
+                <div style="flex:2;">Product</div>
+                <div style="flex:1;" class="text-center">Price</div>
+                <div style="flex:1;" class="text-center">Qty</div>
+                <div style="flex:1;" class="text-end">Subtotal</div>
+            </div>
+    `;
+
+    cart.forEach(function(item) {
+
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+
+        output += `
+            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                <div style="flex:2;">${item.title}</div>
+                <div style="flex:1;" class="text-center">₹${item.price}</div>
+                <div style="flex:1;" class="text-center">${item.qty}</div>
+                <div style="flex:1;" class="text-end text-success fw-bold">₹${itemTotal}</div>
+            </div>
+        `;
+    });
+
+    output += `
+            <div class="d-flex justify-content-between mt-4 fw-bold fs-5">
+                <div>Total</div>
+                <div>₹${total}</div>
+            </div>
+        </div>
+    `;
+
+    checkoutDiv.innerHTML = output;
+    hiddenTotal.value = total;
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    if (document.getElementById("checkoutCart")) {
+        loadCheckout();
+    }
 });
