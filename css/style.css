@@ -663,125 +663,145 @@
     color: #666;
 }
 
-/* ===== Nexora Pink Theme Variables ===== */
-:root {
-    --nexora-pink: #e91e63;
-    --nexora-light-pink: #fce4ec;
-    --nexora-dark: #222;
+/* ============================= */
+/* FILTER WRAPPER */
+/* ============================= */
+
+.filter-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 80px;
+    z-index: 1000;
 }
 
-/* ===== Sticky Filter Icon (Top Right) ===== */
+/* ============================= */
+/* FILTER ICON */
+/* ============================= */
+
 .nexora-filter-icon {
-    position: fixed;
-    top: 90px; /* adjust according to navbar height */
-    right: 25px;
-    background: var(--nexora-pink);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #ff4da6, #ff80bf);
     color: #fff;
-    width: 50px;
-    height: 50px;
     border-radius: 50%;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    font-size: 22px;
     cursor: pointer;
-    box-shadow: 0 8px 25px rgba(233, 30, 99, 0.35);
-    transition: all 0.3s ease;
-    z-index: 1100;
+    box-shadow: 0 6px 20px rgba(255, 77, 166, 0.4);
+    transition: transform 0.3s ease;
+    z-index: 2000;
 }
 
 .nexora-filter-icon:hover {
-    transform: scale(1.08);
-    background: #d81b60;
+    transform: scale(1.1);
 }
 
+/* ============================= */
+/* FILTER WRAPPER */
+/* ============================= */
 
-/* ===== Nexora Pink Filter Panel ===== */
-.filter-panel {
-    position: fixed;
-    top: 0;
-    right: -370px;
-    width: 340px;
-    height: 100%;
-    background: #ffffff;
-    padding: 35px 28px;
-    box-shadow: -10px 0 40px rgba(233, 30, 99, 0.15);
-    transition: right 0.4s ease;
-    z-index: 1200;
-    overflow-y: auto;
-    border-left: 4px solid var(--nexora-pink);
+.filter-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 80px;
+    z-index: 1000;
 }
 
-.filter-panel.active {
-    right: 0;
-}
+/* ============================= */
+/* FILTER ICON */
+/* ============================= */
 
-/* ===== Filter Header ===== */
-.filter-header {
+.nexora-filter-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #ff4da6, #ff80bf);
+    color: #fff;
+    border-radius: 50%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #f3f3f3;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 77, 166, 0.4);
+    transition: transform 0.3s ease;
+    z-index: 2000;
 }
+
+.nexora-filter-icon:hover {
+    transform: scale(1.1);
+}
+
+/* ============================= */
+/* FILTER PANEL */
+/* ============================= */
+
+.filter-panel {
+    position: absolute;
+    top: 90px;
+    right: 20px;
+    width: 300px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #ff4da6;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    z-index: 3000;
+
+    /* Hidden state */
+    transform: translateX(120%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ACTIVE STATE */
+.filter-panel.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ============================= */
+/* STYLING */
+/* ============================= */
 
 .filter-header h4 {
-    font-size: 20px;
     font-weight: 600;
-    color: var(--nexora-dark);
-    margin: 0;
+    color: #ff4da6;
+    margin-bottom: 20px;
 }
 
-/* ===== Back Button ===== */
-.back-btn {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--nexora-pink);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: 0.3s ease;
-}
-
-.back-btn:hover {
-    color: #c2185b;
-}
-
-/* ===== Labels ===== */
 .filter-panel label {
-    font-size: 14px;
     font-weight: 500;
-    color: #555;
-    margin-bottom: 6px;
+    margin-top: 15px;
     display: block;
+    color: #444;
 }
 
-/* ===== Select Styling ===== */
 .filter-panel select {
     width: 100%;
-    padding: 12px 14px;
-    margin-bottom: 22px;
-    border-radius: 10px;
-    border: 1px solid #eee;
-    background: var(--nexora-light-pink);
-    font-size: 14px;
-    transition: all 0.3s ease;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: 0.3s;
 }
 
 .filter-panel select:focus {
-    border-color: var(--nexora-pink);
-    background: #fff;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+    border-color: #ff4da6;
+    box-shadow: 0 0 5px rgba(255, 77, 166, 0.4);
 }
 
-/* ===== Scrollbar Styling ===== */
-.filter-panel::-webkit-scrollbar {
-    width: 6px;
-}
-
-.filter-panel::-webkit-scrollbar-thumb {
-    background: var(--nexora-pink);
-    border-radius: 10px;
+/* Prevent accidental horizontal scroll */
+body {
+    overflow-x: hidden;
 }

@@ -123,6 +123,15 @@ fetch('https://dummyjson.com/products?limit=100')
 
     allProducts = data.products;
 
+    const brandSelect=document.getElementById("brandFilter");
+
+    if(brandSelect){
+        const brands=[...new Set(allProducts.map(p =>p.brand))];
+        brands.forEach(brand =>{
+            brandSelect.innerHTML +=`<option value="${brand}">${brand}</option>`;
+       });
+    }
+
     // ================= PAGE DETECTION =================
     const currentPagePath = window.location.pathname;
 
@@ -360,6 +369,8 @@ fetch('https://dummyjson.com/products/category-list')
 function loadProduct(cat){
     hideHomeSections();
      selectedCategory=cat;
+     currentPage=1;
+    applyFilters();
 //    fetch(`https://dummyjson.com/products/category/${cat}`)
 //    .then(res => res.json())
 //    .then(data => {
@@ -367,12 +378,12 @@ function loadProduct(cat){
     // allProducts = data.products;
     // filterProducts=allProducts;
     // currentPage = 1;
-        filterProducts=allProducts.filter(product =>
-            product.category===cat
-        );
-        currentPage=1;
+    //     filterProducts=allProducts.filter(product =>
+    //         product.category===cat
+    //     );
+    //     currentPage=1;
 
-    render();
+    // render();
     }
 
 function render(){
@@ -786,3 +797,67 @@ document.addEventListener("DOMContentLoaded", function () {
         loadCheckout();
     }
 });
+
+// FILTER PANEL FUNCTIONS
+document.addEventListener("DOMContentLoaded", function () {
+    const panel = document.getElementById("filterPanel");
+    const icon = document.querySelector(".nexora-filter-icon");
+
+    if (!icon || !panel) return;
+
+    // TOGGLE PANEL
+    icon.addEventListener("click", function (e) {
+        e.stopPropagation();
+        panel.classList.toggle("active");
+    });
+
+    // CLOSE WHEN CLICKING OUTSIDE
+    document.addEventListener("click", function (event) {
+        if (!panel.contains(event.target) && !icon.contains(event.target)) {
+            panel.classList.remove("active");
+        }
+    });
+
+    // PREVENT PANEL CLICK FROM CLOSING ITSELF
+    panel.addEventListener("click", function (e) {
+        e.stopPropagation();
+    });
+
+    // FILTER SELECT EVENTS
+    const selects = document.querySelectorAll("#filterPanel select");
+    selects.forEach(select => {
+        select.addEventListener("change", applyFilters);
+    });
+});
+
+function applyFilters(){
+    let baseProducts= selectedCategory
+    ? allProducts.filter(p => p.category ===selectedCategory)
+    :[...allProducts];
+
+    const priceValue=document.getElementById("priceFilter")?.value;
+    const ratingValue=document.getElementById("ratingFilter")?.value;
+    const brandValue=document.getElementById("brandFilter")?.value;
+
+    if(priceValue && priceValue !=="all"){
+        const [min,max]=priceValue.split("-").map(Number);
+        baseProducts=baseProducts.filter(p =>
+            p.price >= min && p.price <= max
+        );
+    }
+
+    if(ratingValue && ratingValue !=="all"){
+        baseProducts=baseProducts.filter(p =>
+            p.rating>= Number(ratingValue)
+        );
+    }
+
+    if(brandValue && brandValue !=="all"){
+        baseProducts=baseProducts.filter(p =>
+            p.brand===brandValue
+        );
+    }
+    filterProducts=baseProducts;
+    currentPage=1;
+    render();
+}
