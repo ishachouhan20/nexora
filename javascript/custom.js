@@ -122,15 +122,30 @@ fetch('https://dummyjson.com/products?limit=100')
 .then(data => {
 
     allProducts = data.products;
+    const categories = [...new Set(allProducts.map(p => p.category))];
+    
+    categoryList.innerHTML ="";
+    categories.forEach(category =>{
+        let newCategory= category.replace(/-/g, " ");
+        categoryList.innerHTML +=`
+        <li>
+        <a href="#" 
+        class="dropdown-item category-link"  
+        data-category="${category}">    
+             ${newCategory}
+           </a>
+           </li>
+           `;
+         });
+// ADD CLICK EVENT PROPERLY
+document.querySelectorAll(".category-link").forEach(link =>{
+    link.addEventListener("click",function(e){
+        e.preventDefault();
 
-    const brandSelect=document.getElementById("brandFilter");
-
-    if(brandSelect){
-        const brands=[...new Set(allProducts.map(p =>p.brand))];
-        brands.forEach(brand =>{
-            brandSelect.innerHTML +=`<option value="${brand}">${brand}</option>`;
-       });
-    }
+        const cat=this.getAttribute("data-category");
+        loadProduct(cat);
+    });
+});
 
     // ================= PAGE DETECTION =================
     const currentPagePath = window.location.pathname;
@@ -350,17 +365,17 @@ if(searchForm){
 // fetch handles promises
 // .then 
 //1.load
-fetch('https://dummyjson.com/products/category-list')
-.then(res => res.json())
-.then(categories => {
-    categoryList.innerHTML ="";
-    categories.forEach(category =>{
-        let newCategory = category.replace(/-/g, " ");
-         categoryList.innerHTML += `<li>
-            <a class='dropdown-item' onclick="loadProduct('${category}')">
-                ${newCategory}</a></li>`;
-    })
-});
+// fetch('https://dummyjson.com/products/category-list')
+// .then(res => res.json())
+// .then(categories => {
+//     categoryList.innerHTML ="";
+//     categories.forEach(category =>{
+//         let newCategory = category.replace(/-/g, " ");
+//          categoryList.innerHTML += `<li>
+//             <a class='dropdown-item' onclick="loadProduct('${category}')">
+//                 ${newCategory}</a></li>`;
+//     })
+// });
 //2.load all products on first page load
 // fetch('https://dummyjson.com/products')
 // .then(res => res.json())
@@ -368,8 +383,19 @@ fetch('https://dummyjson.com/products/category-list')
 //3.load products by category & hide carousel
 function loadProduct(cat){
     hideHomeSections();
+
      selectedCategory=cat;
      currentPage=1;
+
+    // RESET FILTERS WHEN CATEGORY CLICKED
+     const price = document.getElementById("priceFilter");
+     const rating = document.getElementById("ratingFilter");
+     const brand = document.getElementById("brandFilter");
+
+     if(price) price.value="all";
+     if(rating) rating.value="all";
+     if(brand) brand.value="all";
+
     applyFilters();
 //    fetch(`https://dummyjson.com/products/category/${cat}`)
 //    .then(res => res.json())
@@ -832,7 +858,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function applyFilters(){
     let baseProducts= selectedCategory
-    ? allProducts.filter(p => p.category ===selectedCategory)
+    ? allProducts.filter(p => String(p.category).trim().toLowerCase()===
+    String(selectedCategory).trim().toLowerCase())
     :[...allProducts];
 
     const priceValue=document.getElementById("priceFilter")?.value;
@@ -857,7 +884,17 @@ function applyFilters(){
             p.brand===brandValue
         );
     }
+
     filterProducts=baseProducts;
     currentPage=1;
     render();
 }
+
+document.addEventListener("DOMContentLoaded",function(){
+    const path = window.location.pathname;
+
+    // IF HOMEPAGE
+    if(path.includes("index.php") || path.endsWith("/nexora/")){
+        
+    }
+})

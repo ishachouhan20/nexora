@@ -805,3 +805,22 @@
 body {
     overflow-x: hidden;
 }
+
+/* ============================= */
+/* NAVBAR DROPDOWN FIX */
+/* ============================= */
+
+.navbar {
+    position: relative;
+    z-index: 10000;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+    z-index: 11000 !important;
+}
+
+/* Make sure filter panel stays below navbar */
+.filter-panel {
+    z-index: 1000 !important;
+}
