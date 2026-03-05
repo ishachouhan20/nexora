@@ -34,12 +34,6 @@
             <option value="2">2★ & above</option>
         </select>
 
-        <!-- Brand -->
-        <label>Brand</label>
-        <select id="brandFilter">
-            <option value="all">All</option>
-        </select>
-
     </div>
 </div>
 

@@ -160,7 +160,7 @@ document.querySelectorAll(".category-link").forEach(link =>{
     }
 
     // -------- INDEX PAGE --------
-    else if(currentPagePath.includes("index.php")){
+    else{
 
         if(typeof showTopRated === "function"){
             showTopRated();
@@ -318,6 +318,8 @@ function hideHomeSections(){
     }
 }
 function showHomeSections(){
+    // console.log("homeSections:",homeSections);
+    // console.log("carouselWapper:",carouselWapper);
     if(homeSections){
         homeSections.style.display="block";
     }
@@ -382,19 +384,19 @@ if(searchForm){
 // .then(data => displayProduct(data.products));
 //3.load products by category & hide carousel
 function loadProduct(cat){
-    hideHomeSections();
 
      selectedCategory=cat;
      currentPage=1;
 
+    hideHomeSections();
+
     // RESET FILTERS WHEN CATEGORY CLICKED
      const price = document.getElementById("priceFilter");
      const rating = document.getElementById("ratingFilter");
-     const brand = document.getElementById("brandFilter");
 
      if(price) price.value="all";
      if(rating) rating.value="all";
-     if(brand) brand.value="all";
+     
 
     applyFilters();
 //    fetch(`https://dummyjson.com/products/category/${cat}`)
@@ -864,7 +866,6 @@ function applyFilters(){
 
     const priceValue=document.getElementById("priceFilter")?.value;
     const ratingValue=document.getElementById("ratingFilter")?.value;
-    const brandValue=document.getElementById("brandFilter")?.value;
 
     if(priceValue && priceValue !=="all"){
         const [min,max]=priceValue.split("-").map(Number);
@@ -879,12 +880,6 @@ function applyFilters(){
         );
     }
 
-    if(brandValue && brandValue !=="all"){
-        baseProducts=baseProducts.filter(p =>
-            p.brand===brandValue
-        );
-    }
-
     filterProducts=baseProducts;
     currentPage=1;
     render();
@@ -892,9 +887,9 @@ function applyFilters(){
 
 document.addEventListener("DOMContentLoaded",function(){
     const path = window.location.pathname;
-
-    // IF HOMEPAGE
-    if(path.includes("index.php") || path.endsWith("/nexora/")){
-        
-    }
-})
+if(path.includes("shop.php")){
+    hideHomeSections();
+}else{
+    showHomeSections();
+}
+});
